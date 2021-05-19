@@ -41,6 +41,10 @@ if(elem) {
     var hrefProps = isHrefApplies(elem);
     fireEvent(hrefProps);
 }
+clickUrl = getUrlFromElement(frameDocument);
+if(clickUrl) {
+    fireEvent({mediaUrl: clickUrl, _target: "_blank"});
+    }
 }
 
 function getClickEvent() {
@@ -66,6 +70,18 @@ window.open(hrefProps.mediaUrl, hrefProps._target);
             isSizeOffsetSatisfy = (anchorElementNode.offsetHeight > 0) && (anchorElementNode.offsetWidth > 0);
         if (isHyperlinkMatched || isSizeOffsetSatisfy) {
             return anchorElementNode;
+        }
+        return null;
+    }
+
+    function getUrlFromElement(frameDocument) {
+        var noScriptElement = frameDocument.querySelector("noscript");
+        if (!isSet(noScriptElement)) {
+            return null;
+        }
+        var regexValue = noScriptElement.innerHTML.match(/href=['"](.*?)['"]/);
+        if (isSet(regexValue) && isSet(regexValue[1]) && (regexValue[1].includes("//adclick.g.doubleclick.net/pcs/click?"))) {
+            return regexValue[1];
         }
         return null;
     }

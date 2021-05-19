@@ -15,7 +15,7 @@
             template = template.replace("{ad_desc}", landingPageURl);
             template = template.replace("{auctionId}", auctionId);
             template = template.replace("{bannerDiv}", divId);
-            template = template.replace("{adcode}", getGCreative2());
+            template = template.replace("{adcode}", getGCreativeAnime());
             return template;
         }
         
