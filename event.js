@@ -3,7 +3,8 @@ function sendPostMessage(event) {
     if(!isSet(frameWindow)) {
         return;
     }
-    frameWindow.postMessage("hello","*");
+    // not working need to check why?
+    frameWindow.postMessage(event,"*");
 }
 
 function sendEvent(event) {
@@ -16,8 +17,8 @@ function sendEvent(event) {
             dispatchEvent(elem);
             return;
         }
-        var hrefApplies = isHrefApplies(elem);
-        fireEvent(hrefApplies);
+        var hrefProps = isHrefApplies(elem);
+        fireEvent(hrefProps);
     }
 }
 
@@ -29,8 +30,8 @@ function dispatchEvent(elem) {
     elem.dispatchEvent(getClickEvent())
 }
 
-function fireEvent(mediaUrl) {
-    window.open(mediaUrl, "_blank");
+function fireEvent(hrefProps) {
+    window.open(hrefProps.mediaUrl, hrefProps._target);
 }
 
 
@@ -54,7 +55,12 @@ function fireEvent(mediaUrl) {
     }
 
    function isHrefApplies(anchorElementNode) {
-            return anchorElementNode.href;
+            var href =  anchorElementNode.href,
+                target = anchorElementNode.getAttribute("target") || "_blank";
+       return {
+           mediaUrl: href,
+           _target: target
+       };
     }
 
     function isSet(val) {
@@ -70,8 +76,8 @@ function fireEvent(mediaUrl) {
                 return false;
         }
     }
-/*
 
+/*
 key: "handleClick",
                 value: function(e) {
                     if (this.propagateClickEvent(e),
@@ -94,31 +100,4 @@ key: "handleClick",
         return "function" == typeof Event ? e = new MouseEvent("click") : (e = document.createEvent("MouseEvents")).initEvent("click", !0, !0),
         e
     }
-*/
-
-
-/*
-
-
-69
-
-It must be here, because accepted answer from 2012
-
-In 2018 and modern browsers you can send a custom event from iframe to parent window.
-
-iframe:
-
-var data = { foo: 'bar' }
-var event = new CustomEvent('myCustomEvent', { detail: data })
-window.parent.document.dispatchEvent(event)
-parent:
-
-window.document.addEventListener('myCustomEvent', handleEvent, false)
-function handleEvent(e) {
-  console.log(e.detail) // outputs: {foo: 'bar'}
-}
-PS: Of course, you can send events in opposite direction same way.
-
-document.querySelector('#iframe_id').contentDocument.dispatchEvent(event)
-
 */
