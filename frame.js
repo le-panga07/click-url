@@ -48,22 +48,7 @@ function createAndAttachIFrame() {
     } else {
         frame = documentBody.appendChild(iFrameElement);
     }
-    addListener(frame);
     return frame;
-}
-
-function addListener(frame) {
-    win = frame.contentWindow;
-    if (win.addEventListener) {   
-        win.addEventListener("message", displayMessage , false);
-    }   
-    else {
-        win.attachEvent("onmessage", displayMessage);
-    }
-}
-
-function displayMessage(event) {
-	console.log(event.data);
 }
 
 window.createAndAttachIFrame = createAndAttachIFrame;

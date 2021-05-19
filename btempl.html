@@ -17,8 +17,9 @@
 </head>
 
 <body>
-    <div class = "outer" id="wrapper-box" onclick="sendEvent(event)"> 
+    <div class = "outer" id="wrapper-box"> 
      <script>
+        onDOMLoad(document, attachEvent);
         var iFrameElement = createAndAttachIFrame();
         var adCode = getAdcode();
         try {
